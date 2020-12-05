@@ -29,4 +29,28 @@ export class FoodController {
             food: newFood
         })
     }
+
+    @Put('/edit')
+    async editFood(
+        @Res() res,
+        @Query('foodID', new ValidateObjectId()) foodID,
+        @Body() createFoodDTO: CreateFoodDTO
+    ) {
+        const editedFood = await this.foodService.editFood(foodID, createFoodDTO)
+        if(!editedFood) throw new NotFoundException('Food does not exist!')
+        return res.status(HttpStatus.OK).json({
+            message: 'Edit food success',
+            food: editedFood
+        })
+    }
+
+    @Delete('/delete')
+    async deleteFood(@Res() res, @Query('foodID', new ValidateObjectId()) foodID) {
+        const deletedFood = await this.foodService.deleteFood(foodID)
+        if(!deletedFood) throw new NotFoundException('Food does not exist!')
+        return res.status(HttpStatus.OK).json({
+            message: 'Deleted success',
+            food: deletedFood
+        })
+    }
 }
