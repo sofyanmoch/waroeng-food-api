@@ -4,7 +4,6 @@ import {
   Res,
   HttpStatus,
   Param,
-  NotAcceptableException,
   Post,
   Body,
   Query,
@@ -42,10 +41,10 @@ export class FoodController {
     });
   }
 
-  @Put('/edit')
+  @Put('/edit/:foodID')
   async editFood(
     @Res() res,
-    @Query('foodID', new ValidateObjectId()) foodID,
+    @Param('foodID', new ValidateObjectId()) foodID,
     @Body() createFoodDTO: CreateFoodDTO,
   ) {
     const editedFood = await this.foodService.editFood(foodID, createFoodDTO);
@@ -56,10 +55,10 @@ export class FoodController {
     });
   }
 
-  @Delete('/delete')
+  @Delete('/delete/:foodID')
   async deleteFood(
     @Res() res,
-    @Query('foodID', new ValidateObjectId()) foodID,
+    @Param('foodID', new ValidateObjectId()) foodID,
   ) {
     const deletedFood = await this.foodService.deleteFood(foodID);
     if (!deletedFood) throw new NotFoundException('Food does not exist!');

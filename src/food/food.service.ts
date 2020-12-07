@@ -9,7 +9,7 @@ export class FoodService {
   constructor(@InjectModel('Food') private readonly foodModel: Model<Food>) {}
 
   async getFoods(): Promise<Food[]> {
-    const food = await this.foodModel.find().exec();
+    const food = await this.foodModel.find().limit(2).exec();
     return food;
   }
 
