@@ -1,16 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Food } from './interfaces/food.interface';
 import { CreateFoodDTO } from './dto/create-food.dto';
+import { QueryOptions } from './configs/query-option.config';
 
 @Injectable()
 export class FoodService {
   constructor(@InjectModel('Food') private readonly foodModel: Model<Food>) {}
 
-  async getFoods(): Promise<Food[]> {
-    const food = await this.foodModel.find().limit(2).exec();
-    return food;
+  async getFoods(options: QueryOptions) {
+    const foods = await this.foodModel
+      .find()
+      .skip(Number(options.offset))
+      .limit(Number(options.limit))
+      .exec();
+    return { foods, total: foods.length };
   }
 
   async getFood(foodID): Promise<Food> {

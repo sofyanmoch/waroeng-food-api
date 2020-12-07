@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Req,
   Res,
   HttpStatus,
   Param,
@@ -20,8 +21,9 @@ export class FoodController {
   constructor(private foodService: FoodService) {}
 
   @Get('/')
-  async getFoods(@Res() res) {
-    const food = await this.foodService.getFoods();
+  async getFoods(@Res() res, @Req() req) {
+    console.log(req.query);
+    const food = await this.foodService.getFoods(req.query);
     return res.status(HttpStatus.OK).json(food);
   }
 
