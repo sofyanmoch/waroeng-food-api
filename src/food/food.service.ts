@@ -10,13 +10,13 @@ import { QueryOptions } from './configs/query-option.config';
 export class FoodService {
   constructor(@InjectModel('Food') private readonly foodModel: Model<Food>) {}
 
-  async getFoods(options: QueryOptions) {
+  async getFoods(limit, offset) {
     const foods = await this.foodModel
       .find()
-      .skip(Number(options.offset))
-      .limit(Number(options.limit))
+      .skip(Number(offset))
+      .limit(Number(limit))
       .exec();
-    return { foods, total: foods.length };
+    return { foods, total: foods.length, offset: offset, limit: limit };
   }
 
   async getFood(foodID): Promise<Food> {

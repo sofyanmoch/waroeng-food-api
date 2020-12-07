@@ -22,8 +22,10 @@ export class FoodController {
 
   @Get('/')
   async getFoods(@Res() res, @Req() req) {
-    console.log(req.query);
-    const food = await this.foodService.getFoods(req.query);
+    // console.log(req.query);
+    const offset = !req.query.offset ? '0' : req.query.offset;
+    const limit = !req.query.limit ? '5' : req.query.limit;
+    const food = await this.foodService.getFoods(limit, offset);
     return res.status(HttpStatus.OK).json(food);
   }
 
